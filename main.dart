@@ -1,0 +1,127 @@
+import 'package:flutter/material.dart';
+
+void main (){
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: CustomCard(),
+  ));
+}
+
+class CustomCard extends StatelessWidget {
+  CustomCard({super.key});
+
+  final List<Map<String, dynamic>> cardList=[
+    {
+      "img": "https://cdn.ostad.app/course/cover/2025-12-08T14-31-25.697Z-Full-Stack-Web-Development-with-Python,-Django-&-React.jpg",
+      "timeLeft": "10 days left",
+      "available_sit": "20 sits available.",
+      "title":"Mastering python: from zero to hero"
+    },
+    {
+      "img": "https://cdn.ostad.app/course/cover/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg",
+      "timeLeft": "22 days left",
+      "available_sit": "50 sits available.",
+      "title":"Mastering python: from zero to hero"
+    },
+  ];
+
+  Widget myContainer({required String text}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 2.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
+  ButtonStyle myButtonStyle(){
+    return ElevatedButton.styleFrom(
+      backgroundColor: Colors.grey[300],
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 5,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text("Card Page"),
+          backgroundColor: Colors.lightBlue,
+
+          centerTitle: true,
+        ),
+        body: ListView.builder(
+            itemCount: cardList.length,
+            itemBuilder: (context, index){
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)
+                  ),
+                  color: Colors.white.withOpacity(.8),
+                  margin: EdgeInsets.only(bottom: 8),
+                  elevation: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(cardList[index]["img"], height: 250, fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            height: 220,
+                            color: Colors.grey[200],
+                            child: const Center(child: CircularProgressIndicator()),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 8,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(child: myContainer(text: "Batch-14")),
+                          SizedBox(width: 5,),
+                          Expanded(child: myContainer(text: cardList[index]["available_sit"])),
+                          SizedBox(width: 5,),
+                          Expanded(child: myContainer(text: cardList[index]["timeLeft"])),
+                        ],
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(cardList[index]["title"],
+                              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 20,),
+                            SizedBox( height: 55,width: double.infinity,
+                              child:  ElevatedButton(onPressed: (){},
+                                  style: myButtonStyle(),
+                                  child: Text("See more", style: TextStyle(
+                                      fontSize: 22
+                                  ),)),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }
+        ));
+  }
+}
